@@ -1,5 +1,5 @@
 from db import Base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -13,7 +13,9 @@ class Set(Base):
     description = Column(String(255), nullable=False)
     level = Column(Integer, nullable=False, default=0)
     last_opened = Column(DateTime, nullable=True)
-    category_id = Column(Integer, index=True, nullable=True)
-    category = relationship('Category', back_populates='sets', uselist=False)
-    cards = relationship('Card', back_populates='set', cascade='all, delete-orphan')
-    tags = relationship('Tag', back_populates='sets', secondary='SetTags')
+    category_id = Column(Integer, ForeignKey('Categories.id'), nullable=False)
+    category = relationship("Category", back_populates="sets")
+    tags = relationship("SetTag", back_populates="set")
+    cards = relationship("Card", back_populates="set", cascade="all, delete-orphan")
+
+

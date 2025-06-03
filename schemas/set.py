@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from category import Category
-from tag import Tag
-from card import Card, CardCreate
+from .category import Category
+from .tag import Tag
+from .card import Card, CardCreate
 
 
 class SetBase(BaseModel):
