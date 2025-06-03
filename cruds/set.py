@@ -12,8 +12,8 @@ async def get(db: Session, id: int) -> SetSchema | None:
     return None
 
 
-async def get_all(db: Session) -> list[SetSchema]:
-    results = db.query(Set).all()  # type: ignore
+async def get_all(db: Session, skip: int = 0, limit: int = 15) -> list[SetSchema]:
+    results = db.query(Set).offset(skip).limit(limit).all()  # type: ignore
 
     if results:
         return [SetSchema.from_orm(result) for result in results]
