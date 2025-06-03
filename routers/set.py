@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from cruds import set
 from schemas import SetCreate, Set, SetUpdate
+from jwt_token import require_role_from_cookie
 
 
 SetRouter = APIRouter(
@@ -44,7 +45,7 @@ async def update_set(id: int, set_update: SetUpdate, db=Depends(get_db)):
 
 
 @SetRouter.delete("/{id}", response_model=None)
-async def delete_set(id: int, db=Depends(get_db)):
+async def delete_set(id: int, db=Depends(get_db), payload: dict = Depends(require_role_from_cookie("admin"))):
     result = await set.delete(db, id)
 
     if not result:
