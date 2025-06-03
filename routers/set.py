@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from cruds import set
-from schemas import SetCreate, Set
+from schemas import SetCreate, Set, SetUpdate
 
 
 SetRouter = APIRouter(
@@ -34,7 +34,7 @@ async def create_set(set_create: SetCreate, db=Depends(get_db)):
 
 
 @SetRouter.put("/{id}", response_model=Set | None)
-async def update_set(id: int, set_update: SetCreate, db=Depends(get_db)):
+async def update_set(id: int, set_update: SetUpdate, db=Depends(get_db)):
     result = await set.update(db, id, set_update)
 
     if not result:
@@ -50,4 +50,4 @@ async def delete_set(id: int, db=Depends(get_db)):
     if not result:
         raise HTTPException(status_code=404, detail=f"Set with id {id} not found.")
 
-    return 
+    return
