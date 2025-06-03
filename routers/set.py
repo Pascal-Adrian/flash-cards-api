@@ -1,0 +1,53 @@
+from fastapi import APIRouter, Depends, HTTPException
+from db import get_db
+from cruds import set
+from schemas import SetCreate, Set
+
+
+SetRouter = APIRouter(
+    prefix="/sets",
+    tags=["sets"]
+)
+
+
+@SetRouter.get("/", response_model=list[Set])
+async def get_all_sets(db=Depends(get_db)):
+    result = await set.get_all(db)
+    return result
+
+
+@SetRouter.get("/{id}", response_model=Set | None)
+async def get_set(id: int, db=Depends(get_db)):
+    result = await set.get(db, id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Set with id {id} not found.")
+
+    return result
+
+
+@SetRouter.post("/", response_model=Set)
+async def create_set(set_create: SetCreate, db=Depends(get_db)):
+    result = await set.create(db, set_create)
+
+    return result
+
+
+@SetRouter.put("/{id}", response_model=Set | None)
+async def update_set(id: int, set_update: SetCreate, db=Depends(get_db)):
+    result = await set.update(db, id, set_update)
+
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Set with id {id} not found.")
+
+    return result
+
+
+@SetRouter.delete("/{id}", response_model=None)
+async def delete_set(id: int, db=Depends(get_db)):
+    result = await set.delete(db, id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Set with id {id} not found.")
+
+    return 
