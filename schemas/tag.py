@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class TagBase(BaseModel):
@@ -12,3 +12,5 @@ class TagCreate(TagBase):
 
 class Tag(TagBase):
     id: int
+
+    model_config = ConfigDict(from_attributes=True)

@@ -9,4 +9,4 @@ class Tag(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), index=True, nullable=False)
     color = Column(String(30), nullable=True)
-    sets = relationship("SetTag", back_populates="tag")
+    sets = relationship("Set", secondary="SetTag", back_populates="tags")
