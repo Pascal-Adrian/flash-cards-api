@@ -12,8 +12,8 @@ SetRouter = APIRouter(
 
 
 @SetRouter.get("/", response_model=list[Set])
-async def get_all_sets(db=Depends(get_db), payload: dict = Depends(require_role_from_cookie("user"))):
-    result = await set.get_all(db)
+async def get_all_sets(db=Depends(get_db), skip: int = 0, limit: int = 15, payload: dict = Depends(require_role_from_cookie("user"))):
+    result = await set.get_all(db, skip, limit)
     return result
 
 
