@@ -38,7 +38,7 @@ def decode_jwt(token: str) -> dict:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-def require_role_from_cookie(role: str):
+def require_role_from_cookie(roles: list[str]):
     def dependency(request: Request):
         token = request.cookies.get("access_token")
         if not token:
